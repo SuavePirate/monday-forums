@@ -10,6 +10,7 @@ const likeIcon = require("../../content/icons/Like.svg");
 
 interface ItemProps {
     item: Item
+    voteCounts: {upvoteCount: number, downvoteCount: number}
     group: Group
 }
 
@@ -63,19 +64,7 @@ const ItemCard: React.FC<ItemProps> = (props) => {
             }
         }
     `
-    let upvoteCount = 0;
-    let downvoteCount = 0;
-    
-    const upvoters = props.item.column_values?.find(v => v.title === 'Upvoters')?.value;
-    if (upvoters) {
-        const upvotersValue = JSON.parse(upvoters);
-        upvoteCount += ((upvotersValue as PeopleColumnValue)?.personsAndTeams?.length ?? 0)
-    }
-    const downvoters = props.item.column_values?.find(v => v.title === 'Downvoters')?.value;
-    if (downvoters) {
-        const downvotersValue = JSON.parse(downvoters);
-        downvoteCount += ((downvotersValue as PeopleColumnValue)?.personsAndTeams?.length ?? 0)
-    }
+   
     return (<Link to={`/category/${props.group.id}/posts/${props.item.id}`} className={containerStyle}>
         <div className="label-splash" />
         <div className="label-container">
@@ -84,11 +73,11 @@ const ItemCard: React.FC<ItemProps> = (props) => {
         </div>
         <div className="vote-container">
             <div className="vote-item">
-                <p className="vote-count">{upvoteCount}</p>
+                <p className="vote-count">{props.voteCounts.upvoteCount}</p>
                 <img src={likeIcon} />
             </div>
             <div className="vote-item">
-                <p className="vote-count">{downvoteCount}</p>
+                <p className="vote-count">{props.voteCounts.downvoteCount}</p>
                 <img className="flipped" src={likeIcon} />
             </div>
         </div>

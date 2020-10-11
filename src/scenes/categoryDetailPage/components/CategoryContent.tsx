@@ -25,7 +25,7 @@ export default class CategoryContent extends React.Component<CategoryProps> {
             <ul>
                 {itemsContainer.state.items.map(item => (
                     <li key={item.id}>
-                        <ItemCard item={item} group={group} />
+                        <ItemCard item={item} group={group} voteCounts={itemsContainer.getVoteCounts(item)} />
                     </li>
                 ))}
             </ul>

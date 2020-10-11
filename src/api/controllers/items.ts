@@ -9,6 +9,10 @@ export const getItems = (boardId: string | number, groupId: string) => {
                     id
                     name
                     created_at
+                    updates {
+                      id
+                      body
+                    }
                     creator {
                         id
                         name
