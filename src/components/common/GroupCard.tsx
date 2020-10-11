@@ -8,7 +8,7 @@ interface GroupCardProps {
     group: Group
 }
 
-const GroupCard: React.SFC<GroupCardProps> = (props) => {
+const GroupCard: React.FC<GroupCardProps> = (props) => {
     const style = css`
         background: ${props.group.color};
         color: ${color_text_light};
