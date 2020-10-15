@@ -8,6 +8,7 @@ import CardView from '../../../components/common/CardView';
 import moment from 'moment';
 import { color_ulgrey } from '../../../constants/colors';
 import CommentCard from '../../../components/common/CommentCard';
+import EditComment from '../../../components/common/EditComment';
 const likeIcon = require("../../../content/icons/Like.svg");
 
 interface PostProps {
@@ -16,14 +17,37 @@ interface PostProps {
     itemsContainer: ItemsContainer
     mondayContainer: MondayStateContainer
 }
+interface PostState {
+    isWriting: boolean
+}
 
-export default class PostContent extends React.Component<PostProps> {
+export default class PostContent extends React.Component<PostProps, PostState> {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isWriting: false
+        }
+    }
     async componentDidMount() {
         await this.props.itemsContainer.loadItems(this.props.mondayContainer.state.board.id, this.props.groupId);
         const currentItem = this.props.itemsContainer.state.items?.find(i => i.id == this.props.itemId);
         if (currentItem) {
             this.props.itemsContainer.setCurrentItem(currentItem);
         }
+    }
+    toggleWritePost() {
+        this.setState({
+            ...this.state,
+            isWriting: !this.state.isWriting
+        })
+    }
+    handleNewComment(text: string) {
+        // TODO: send to items container to create sub-item for current item and then also update the current item to get the state change
+        this.props.itemsContainer.addSubItem(this.props.itemId, text);
+        this.setState({
+            ...this.state,
+            isWriting: false
+        });
     }
     render() {
         const { itemsContainer, groupId } = this.props;
@@ -64,13 +88,24 @@ export default class PostContent extends React.Component<PostProps> {
             <ul>
                 {subItems?.map(i => (
                     <li key={i.id}>
-                       <CommentCard item={currentItem} commentItem={i} voteCounts={itemsContainer.getVoteCounts(i)}/>
+                        <CommentCard item={currentItem} commentItem={i} voteCounts={itemsContainer.getVoteCounts(i)} />
                     </li>
                 ))}
             </ul>
+            {this.state.isWriting
+                ? <CardView>
+                    <EditComment onConfirm={this.handleNewComment.bind(this)} placeholder="Write a comment" />
+                </CardView>
+                : <button className={addNewCommentButton} onClick={this.toggleWritePost.bind(this)}>
+                    Add new comment
+                </button>}
         </PageContainer>)
     }
 }
+
+const addNewCommentButton = css`
+    align-self: center;
+`
 
 const voteContainer = css`
     display: flex;

@@ -44,6 +44,23 @@ export default class ItemsContainer extends Container<ItemsContainerState> {
         }
     }
 
+    async addSubItem(parentItemId: number | string, text: string) {
+        const item: Item = {
+            name: text.substr(0, 15) + "...",
+            column_values: [{
+                id: "long_text",
+                title: "Description",
+                value: text,
+                type: "long-text",
+                text: text
+            }]
+        };
+
+        const response = await mondayApi.createSubItem(parentItemId, item);
+
+        return response;
+    }
+
     setCurrentItem(item: Item) {
         this.setState({
             ...this.state,

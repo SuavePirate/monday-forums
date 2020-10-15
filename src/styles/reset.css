@@ -130,3 +130,21 @@ a {
 h1 {
     font-size: 32px;
 }
+
+button {
+    background: #0085FF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px;
+    cursor: pointer;
+}
+
+input {
+    background: white;
+    color: black;
+    border: 1px solid #C5C7D0;
+    border-radius: 8px;
+    padding: 0 8px;
+    font-size: 16px;
+}

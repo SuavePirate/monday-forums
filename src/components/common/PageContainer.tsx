@@ -12,6 +12,8 @@ const PageContainer = (props) => (
 
 const containerStyle = css`
     padding: 32px;
+    display: flex;
+    flex-direction: column;
 `;
 
 export default PageContainer;
