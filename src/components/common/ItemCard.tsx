@@ -4,7 +4,7 @@ import Item from '../../models/Item';
 import Group from '../../models/Group';
 import { shadow_medium, shadow_small } from '../../constants/shadows';
 import { Link } from 'react-router-dom';
-import { color_text_asphalt, color_text_dark } from '../../constants/colors';
+import { color_light, color_text_asphalt, color_text_dark } from '../../constants/colors';
 import PeopleColumnValue from '../../models/PeopleColumnValue';
 const likeIcon = require("../../content/icons/Like.svg");
 
@@ -23,6 +23,7 @@ const ItemCard: React.FC<ItemProps> = (props) => {
         margin: 16px 0;
         border-radius: 8px;
         overflow: hidden;
+        background: ${color_light};
         color: ${color_text_dark};
 
         .label-splash {

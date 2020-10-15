@@ -12,14 +12,14 @@ interface ItemsContainerState {
 export default class ItemsContainer extends Container<ItemsContainerState> {
     constructor() {
         super();
-        this.state ={ 
+        this.state = {
             isLoading: false,
             items: [],
             errors: []
         }
     }
 
-    async loadItems(boardId: number|string, groupId: string) {
+    async loadItems(boardId: number | string, groupId: string) {
         await this.setState({
             ...this.state,
             isLoading: true
@@ -32,7 +32,7 @@ export default class ItemsContainer extends Container<ItemsContainerState> {
                 errors: [],
                 items: response.data.boards[0].groups[0].items
             })
-    
+
             return response;
 
         } catch {
@@ -43,7 +43,7 @@ export default class ItemsContainer extends Container<ItemsContainerState> {
             })
         }
     }
-    
+
     setCurrentItem(item: Item) {
         this.setState({
             ...this.state,
@@ -54,16 +54,18 @@ export default class ItemsContainer extends Container<ItemsContainerState> {
     getVoteCounts(item: Item) {
         let upvoteCount = 0;
         let downvoteCount = 0;
-        
-        const upvoters = item.column_values?.find(v => v.title === 'Upvoters')?.value;
-        if (upvoters) {
-            const upvotersValue = JSON.parse(upvoters);
-            upvoteCount += ((upvotersValue as PeopleColumnValue)?.personsAndTeams?.length ?? 0)
-        }
-        const downvoters = item.column_values?.find(v => v.title === 'Downvoters')?.value;
-        if (downvoters) {
-            const downvotersValue = JSON.parse(downvoters);
-            downvoteCount += ((downvotersValue as PeopleColumnValue)?.personsAndTeams?.length ?? 0)
+
+        if (item) {
+            const upvoters = item.column_values?.find(v => v.title === 'Upvoters')?.value;
+            if (upvoters) {
+                const upvotersValue = JSON.parse(upvoters);
+                upvoteCount += ((upvotersValue as PeopleColumnValue)?.personsAndTeams?.length ?? 0)
+            }
+            const downvoters = item.column_values?.find(v => v.title === 'Downvoters')?.value;
+            if (downvoters) {
+                const downvotersValue = JSON.parse(downvoters);
+                downvoteCount += ((downvotersValue as PeopleColumnValue)?.personsAndTeams?.length ?? 0)
+            }
         }
 
         return {

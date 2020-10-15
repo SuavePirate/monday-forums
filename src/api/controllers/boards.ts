@@ -32,6 +32,11 @@ export const getSubItemsBoard = (boardId: number) => {
             items {
                 id,
                 name,
+                creator {
+                    name
+                    id
+                    photo_small
+                }
                 column_values {
                     id
                     title

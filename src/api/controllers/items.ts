@@ -16,6 +16,7 @@ export const getItems = (boardId: string | number, groupId: string) => {
                     creator {
                         id
                         name
+                        photo_small
                     }
                     column_values {
                       id
