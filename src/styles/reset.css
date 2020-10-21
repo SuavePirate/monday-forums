@@ -140,7 +140,7 @@ button {
     cursor: pointer;
 }
 
-input {
+input, textarea {
     background: white;
     color: black;
     border: 1px solid #C5C7D0;

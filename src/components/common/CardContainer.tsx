@@ -10,7 +10,6 @@ const CardContainer = (props) => (
 const containerStyle = css`
     display: flex;
     flex-wrap: wrap;
-    margin: 32px;
 `
 
 export default CardContainer;

@@ -17,9 +17,10 @@ const GroupCard: React.FC<GroupCardProps> = (props) => {
         align-items: center;
         justify-content: center;
         border-radius: 16px;
-        height: 320px;
-        width: 480px;
-        margin: 16px;
+        height: 232px;
+        width: 300px;
+        margin: 8px;
+        font-size: 30px;
     `
     return (
         <Link to={`/category/${props.group.id}`} className={style}>
