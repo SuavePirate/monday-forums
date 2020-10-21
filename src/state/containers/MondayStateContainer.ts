@@ -3,16 +3,19 @@ import { } from 'monday-sdk-js';
 import Board from "../../models/Board";
 import MondayContext from "../../models/MondayContex";
 import SubItemsBoard from "../../models/SubItemsBoard";
+import User from "../../models/User";
 interface MondayState {
     context: MondayContext,
     board: Board,
-    subItemsBoard: SubItemsBoard
+    subItemsBoard: SubItemsBoard,
+    me: User
 }
 abstract class MondayStateContainer extends Container<MondayState> {
     constructor() {
         super();
         this.state = {
             context: {},
+            me: null,
             board: null,
             subItemsBoard: null
         }

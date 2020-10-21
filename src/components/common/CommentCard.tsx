@@ -12,6 +12,8 @@ interface CommentProps {
     item: Item
     voteCounts: { upvoteCount: number, downvoteCount: number }
     commentItem: Item
+    onUpvote: (item: Item) => void
+    onDownvote: (item: Item) => void
 }
 interface CommentState {
     isExpanded: boolean
@@ -47,11 +49,15 @@ class CommentCard extends React.Component<CommentProps, CommentState> {
                 <div className="vote-container">
                     <div className="vote-item">
                         <p className="vote-count">{voteCounts.upvoteCount}</p>
-                        <img src={likeIcon} />
+                        <button type="button" onClick={() => this.props.onUpvote(this.props.commentItem)}>
+                            <img src={likeIcon} />
+                        </button>
                     </div>
                     <div className="vote-item">
                         <p className="vote-count">{voteCounts.downvoteCount}</p>
-                        <img className="flipped" src={likeIcon} />
+                        <button type="button" onClick={() => this.props.onDownvote(this.props.commentItem)}>
+                            <img className="flipped" src={likeIcon} />
+                        </button>
                     </div>
                 </div>
             </div>
@@ -126,6 +132,9 @@ align-items: center;
     .vote-item{
         display: flex;
         align-items: center;
+        button {
+            background: transparent;
+        }
         img {
             width: 24px;
             height: 24px;

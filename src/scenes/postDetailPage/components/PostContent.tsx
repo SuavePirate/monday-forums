@@ -9,11 +9,12 @@ import moment from 'moment';
 import { color_ulgrey } from '../../../constants/colors';
 import CommentCard from '../../../components/common/CommentCard';
 import EditComment from '../../../components/common/EditComment';
+import Item from '../../../models/Item';
 const likeIcon = require("../../../content/icons/Like.svg");
 
 interface PostProps {
     groupId: string
-    itemId: string
+    itemId: string | number
     itemsContainer: ItemsContainer
     mondayContainer: MondayStateContainer
 }
@@ -42,12 +43,36 @@ export default class PostContent extends React.Component<PostProps, PostState> {
         })
     }
     handleNewComment(text: string) {
-        // TODO: send to items container to create sub-item for current item and then also update the current item to get the state change
         this.props.itemsContainer.addSubItem(this.props.itemId, text);
         this.setState({
             ...this.state,
             isWriting: false
         });
+    }
+    handleUpvote() {
+        this.props.itemsContainer.upvoteItem(
+            this.props.mondayContainer.state.board.id,
+            this.props.itemsContainer.state.currentItem,
+            this.props.mondayContainer.state.me);
+    }
+    handleDownvote() {
+        this.props.itemsContainer.downvoteItem(
+            this.props.mondayContainer.state.board.id,
+            this.props.itemsContainer.state.currentItem,
+            this.props.mondayContainer.state.me);
+    }
+    handleCommentUpvote(item: Item) {
+        console.log(item)
+        this.props.itemsContainer.upvoteItem(
+            this.props.mondayContainer.state.subItemsBoard.id,
+            item,
+            this.props.mondayContainer.state.me);
+    }
+    handleCommentDownvote(item: Item) {
+        this.props.itemsContainer.downvoteItem(
+            this.props.mondayContainer.state.subItemsBoard.id,
+            item,
+            this.props.mondayContainer.state.me);
     }
     render() {
         const { itemsContainer, groupId } = this.props;
@@ -56,14 +81,11 @@ export default class PostContent extends React.Component<PostProps, PostState> {
         const subItemsValue = currentItem?.column_values?.find(v => v.type === "subtasks")?.value;
         const votes = itemsContainer.getVoteCounts(currentItem);
         let subItems = null
-        console.log(subItemsValue)
         if (subItemsValue) {
             const subIds = JSON.parse(subItemsValue);
-            console.log(subIds)
             subItems = this.props.mondayContainer.getSubItems(subIds?.linkedPulseIds?.map(o => o.linkedPulseId));
-            console.log(subItems)
         }
-        if (isLoading || !group || !currentItem || subItems == null) return <div>Loading...</div>
+        if (isLoading || !group || !currentItem) return <div>Loading...</div>
         return (<PageContainer>
             <CardView>
                 <h1>{currentItem?.name ?? "Unknown"}</h1>
@@ -76,8 +98,8 @@ export default class PostContent extends React.Component<PostProps, PostState> {
                 </p>
                 <div className={voteContainer}>
                     <p>{votes?.upvoteCount ?? 0}</p>
-                    <img src={likeIcon} />
-                    <img src={likeIcon} className="flip" />
+                    <button type="button" onClick={this.handleUpvote.bind(this)}><img src={likeIcon} /></button>
+                    <button type="button" onClick={this.handleDownvote.bind(this)}><img src={likeIcon} className="flip" /></button>
                     <p>{votes?.downvoteCount ?? 0}</p>
                 </div>
                 <div className={descriptionContainer}>
@@ -88,7 +110,11 @@ export default class PostContent extends React.Component<PostProps, PostState> {
             <ul>
                 {subItems?.map(i => (
                     <li key={i.id}>
-                        <CommentCard item={currentItem} commentItem={i} voteCounts={itemsContainer.getVoteCounts(i)} />
+                        <CommentCard item={currentItem}
+                            commentItem={i}
+                            voteCounts={itemsContainer.getVoteCounts(i)}
+                            onUpvote={this.handleCommentUpvote.bind(this)}
+                            onDownvote={this.handleCommentDownvote.bind(this)} />
                     </li>
                 ))}
             </ul>
@@ -103,6 +129,8 @@ export default class PostContent extends React.Component<PostProps, PostState> {
     }
 }
 
+
+
 const addNewCommentButton = css`
     align-self: center;
 `
@@ -112,13 +140,17 @@ const voteContainer = css`
     align-items: center;
     justify-content: center;
     width: 100%;
-    > img {
-        margin: 0 16px;
-        flex: 0;
-        &.flip {
-            transform: rotate(180deg);
+    > button {
+        background: transparent;
+        > img {
+            margin: 0 16px;
+            flex: 0;
+            &.flip {
+                transform: rotate(180deg);
+            }
         }
     }
+   
     > p {
         flex: 1;
         &:first-child {

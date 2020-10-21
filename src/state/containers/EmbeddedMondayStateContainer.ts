@@ -20,9 +20,12 @@ export default class EmbeddedMondayStateContainer extends MondayStateContainer {
                 const subItemsBoardResponse = await mondayApi.getSubItemsBoard(temporalSubItemsBoard.id);
                 subItemsBoard = subItemsBoardResponse?.data?.boards[0];
             }
+            const meResponse = await mondayApi.getMe();
+
             await this.setState({
                 ...this.state,
                 board: boardResponse.data.boards[0],
+                me: meResponse.data.me,
                 subItemsBoard: subItemsBoard
             })
         });

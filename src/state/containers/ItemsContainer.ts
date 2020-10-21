@@ -2,6 +2,9 @@ import { Container } from "unstated";
 import Item from "../../models/Item";
 import * as mondayApi from '../../api'
 import PeopleColumnValue from "../../models/PeopleColumnValue";
+import User from "../../models/User";
+import _ from "lodash";
+import { updateColumnValue } from "../../api";
 interface ItemsContainerState {
     isLoading: boolean
     items: Item[]
@@ -47,17 +50,11 @@ export default class ItemsContainer extends Container<ItemsContainerState> {
     async addSubItem(parentItemId: number | string, text: string) {
         const item: Item = {
             name: text.substr(0, 15) + "...",
-            column_values: [{
-                id: "long_text",
-                title: "Description",
-                value: text,
-                type: "long-text",
-                text: text
-            }]
+            column_values: []
         };
 
         const response = await mondayApi.createSubItem(parentItemId, item);
-
+        const updateResponse = await mondayApi.updateColumnValue(response.data.create_subitem.id, response.data.create_subitem.board.id, "long_text", `{ \\"value\\" : \\"${text}\\", \\"text\\": \\"${text}\\"}`)
         return response;
     }
 
@@ -66,6 +63,60 @@ export default class ItemsContainer extends Container<ItemsContainerState> {
             ...this.state,
             currentItem: item
         })
+    }
+
+    async upvoteItem(boardId: number | string, item: Item, me: User) {
+        const upvotersValue = item.column_values.find(c => c.title === "Upvoters") as any
+        const upvoters = JSON.parse(upvotersValue.value)?.personsAndTeams ?? [];
+        const downvotersValue = item.column_values.find(c => c.title === "Downvoters") as any
+        const downvoters = JSON.parse(downvotersValue.value)?.personsAndTeams ?? [];
+        console.log(upvoters)
+        if (upvoters.some(p => p.id === me.id)) {
+            console.log('ya already upvoted ya dingus');
+            return;
+        }
+        if (downvoters.some(p => p.id === me.id)) {
+            _.remove(downvoters, u => (u as any).id == me.id);
+        }
+
+        upvoters.push({
+            id: me.id,
+            kind: "person"
+        });
+
+        const json = JSON.stringify(upvoters).replace(/"/g, '\\"');
+        const reverseJson = JSON.stringify(downvoters).replace(/"/g, '\\"');
+
+        const response = await mondayApi.updateColumnValue(item.id, boardId, item.column_values?.find(v => v.title === 'Upvoters')?.id, `{\\"personsAndTeams\\": ${json}, \\"changed_at\\":\\"2020-10-08T00:30:24.345Z\\"}`)
+        const reverseResponse = await mondayApi.updateColumnValue(item.id, boardId, item.column_values?.find(v => v.title === 'Downvoters')?.id, `{\\"personsAndTeams\\": ${reverseJson}, \\"changed_at\\":\\"2020-10-08T00:30:24.345Z\\"}`)
+
+        return response
+    }
+    async downvoteItem(boardId: number | string, item: Item, me: User) {
+       
+        const upvotersValue = item.column_values.find(c => c.title === "Upvoters") as any
+        const upvoters = JSON.parse(upvotersValue.value)?.personsAndTeams ?? [];
+        const downvotersValue = item.column_values.find(c => c.title === "Downvoters") as any
+        const downvoters = JSON.parse(downvotersValue.value)?.personsAndTeams ?? [];
+        
+        if (downvoters.some(p => p.id === me.id)) {
+            console.log('ya already dowmnvoted ya dingus');
+            return;
+        }
+        if (upvoters.some(p => p.id === me.id)) {
+            _.remove(upvoters, u => (u as any).id == me.id);
+        }
+        downvoters.push({
+            id: me.id,
+            kind: "person"
+        });
+
+        const json = JSON.stringify(downvoters).replace(/"/g, '\\"');
+        const reverseJson = JSON.stringify(upvoters).replace(/"/g, '\\"');
+        const response = await mondayApi.updateColumnValue(item.id, boardId, item.column_values?.find(v => v.title === 'Downvoters')?.id, `{\\"personsAndTeams\\": ${json}, \\"changed_at\\":\\"2020-10-08T00:30:24.345Z\\"}`)
+        const reverseResponse = await mondayApi.updateColumnValue(item.id, boardId, item.column_values?.find(v => v.title === 'Upvoters')?.id, `{\\"personsAndTeams\\": ${reverseJson}, \\"changed_at\\":\\"2020-10-08T00:30:24.345Z\\"}`)
+
+        return response
     }
 
     getVoteCounts(item: Item) {
