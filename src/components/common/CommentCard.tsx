@@ -41,6 +41,7 @@ class CommentCard extends React.Component<CommentProps, CommentState> {
     render() {
         const { voteCounts, commentItem, canEdit, canMarkAnswer, answerSettings } = this.props;
         const selectedAnswerType = commentItem.column_values.find(c => c.title == "Answer Type")?.text;
+        const selectedAnswerIndex = Object.keys(answerSettings.labels).find(k => answerSettings.labels[k] == selectedAnswerType);
         return (<div className={containerStyle}>
             {canMarkAnswer && <>
                 <p className="answer-selection-label">Select answer type</p>
@@ -58,6 +59,15 @@ class CommentCard extends React.Component<CommentProps, CommentState> {
                     ))}
                 </div>
             </>}
+
+            <div className="answer-selection-container">
+                {selectedAnswerType != "None" && <div className={`answer-option ${css`
+                        background: ${answerSettings.labels_colors[selectedAnswerIndex].color};
+                    `}`} onClick={() => this.props.onMarkAnswer(commentItem, selectedAnswerIndex)}>
+                    <p>{answerSettings.labels[selectedAnswerIndex]}</p>
+                </div>
+                }
+            </div>
             <div className="content-container">
                 <div className="label-container">
                     <p className="item-label">{commentItem.name}</p>
