@@ -16,6 +16,7 @@ interface PostProps {
     groupId?: string
     itemsContainer: ItemsContainer
     mondayContainer: MondayStateContainer
+    history: any
 }
 interface PostState {
     groupId: string,
@@ -44,10 +45,13 @@ export default class CreatePostContent extends React.Component<PostProps, PostSt
             title: e.target.value
         })
     }
-    handleSubmit(e) {
+    async handleSubmit(e) {
         e.preventDefault();
 
-        // TODO: add the item with column values
+        const response = await this.props.itemsContainer.addItem(this.props.mondayContainer.state.board?.id, this.state.groupId, this.state.title, this.state.description);
+        if(response?.data?.create_item?.id) {
+            this.props.history.push(`/category/${this.state.groupId}/posts/${response.data.create_item.id}`)
+        }
     }
     render() {
         const { groupId } = this.state;
@@ -61,13 +65,19 @@ export default class CreatePostContent extends React.Component<PostProps, PostSt
             height: 24px;
             text-align: center;
             border-radius: 12px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 8px;
         `
 
         return (<PageContainer>
             <h1>Create a New Post</h1>
             <CardView>
                 <form className={containerStyle} onSubmit={this.handleSubmit.bind(this)}>
-                    <input type="text" value={this.state.title} onChange={this.handleTitleChange.bind(this)}/>
+                    <label>Title of post:</label>
+                    <input type="text" value={this.state.title} onChange={this.handleTitleChange.bind(this)} placeholder="Give your post a title"/>
                     <div className={creatorContainer}>
                         <img src={me?.photo_small} alt={me?.name} />
                         <p className="creator-name">{me.name}</p>
@@ -76,10 +86,11 @@ export default class CreatePostContent extends React.Component<PostProps, PostSt
                         {moment().format("MMMM DD, YYYY")}
                     </p>
                     <div className={groupChip}>
-                        {group?.title}
+                        <p>{group?.title}</p>
                     </div>
                     <div className={descriptionContainer}>
-                        <textarea value={this.state.description} onChange={this.handleDescriptionChange.bind(this)} />
+                    <label>Post body:</label>
+                        <textarea value={this.state.description} onChange={this.handleDescriptionChange.bind(this)} placeholder="Describe your issue or question. Markdown supported" rows={12}/>
                     </div>
                     <button type="submit">Post</button>
                 </form>
@@ -94,9 +105,18 @@ const containerStyle = css`
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
     >button {
         width: 100%;
         margin: 32px;
+    }
+    >input {
+        width: 100%;
+    }
+    label {
+        display: block;
+        width: 100%;
+        text-align: left;
     }
 `
 const createdDate = css`
@@ -122,6 +142,12 @@ const creatorContainer = css`
 
 const descriptionContainer = css`
     margin: 32px;
-    line-height: 24px;
-    font-size: 16px;
+    flex: 1;
+    width: 100%;
+    >textarea {
+        line-height: 24px;
+        font-size: 16px;
+        width: 100%;
+        margin: 8px 0;
+    }
 `

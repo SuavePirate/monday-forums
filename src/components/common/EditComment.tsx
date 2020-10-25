@@ -26,7 +26,8 @@ class EditComment extends React.Component<EditCommentProps, EditCommentState> {
     render() {
         return (
             <form className={containerStyle} onSubmit={() => this.props.onConfirm(this.state.text)}>
-                <input placeholder={this.props.placeholder} value={this.state.text} onChange={this.handleTextChange.bind(this)}/>
+                <label>Write a comment</label>
+                <textarea placeholder={this.props.placeholder} value={this.state.text} onChange={this.handleTextChange.bind(this)} rows={8}/>
                 <button type="submit">
                     Post Comment
                 </button>
@@ -38,11 +39,18 @@ class EditComment extends React.Component<EditCommentProps, EditCommentState> {
 const containerStyle = css`
     display: flex;
     align-items: center;
+    flex-direction: column;
     flex: 1;
     width: 100%;
-    input {
+    >* {
+        width: 100%;
+    }
+    label {
+        text-align: left;
+    }
+    textarea {
         flex: 1;
-        margin-right: 8px;
+        margin: 8px;
     }
 `
 

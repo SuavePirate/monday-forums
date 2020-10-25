@@ -5,6 +5,7 @@ import Group from '../../models/Group';
 import { shadow_medium, shadow_small } from '../../constants/shadows';
 import { Link } from 'react-router-dom';
 import { color_light, color_text_asphalt, color_text_dark, color_ulgrey } from '../../constants/colors';
+import AnswerTypeColumn from '../../models/AnswerTypeColumn';
 const likeIcon = require("../../content/icons/Like.svg");
 const expandIcon = require('../../content/icons/Move to.svg');
 
@@ -12,8 +13,12 @@ interface CommentProps {
     item: Item
     voteCounts: { upvoteCount: number, downvoteCount: number }
     commentItem: Item
+    canMarkAnswer: boolean
+    canEdit: boolean
+    answerSettings: AnswerTypeColumn
     onUpvote: (item: Item) => void
     onDownvote: (item: Item) => void
+    onMarkAnswer: (item: Item, answerTypeId: string) => void
 }
 interface CommentState {
     isExpanded: boolean
@@ -34,8 +39,25 @@ class CommentCard extends React.Component<CommentProps, CommentState> {
     }
 
     render() {
-        const { voteCounts, commentItem } = this.props;
+        const { voteCounts, commentItem, canEdit, canMarkAnswer, answerSettings } = this.props;
+        const selectedAnswerType = commentItem.column_values.find(c => c.title == "Answer Type")?.text;
         return (<div className={containerStyle}>
+            {canMarkAnswer && <>
+                <p className="answer-selection-label">Select answer type</p>
+                <div className="answer-selection-container">
+                    {Object.keys(answerSettings?.labels)?.map((k, i) => (
+                        <div className={`answer-option-wrapper ${selectedAnswerType == answerSettings.labels[k] ? css`
+                        border: 1px solid ${answerSettings.labels_colors[k].color};
+                    ` : ''}`} key={i}>
+                            <div className={`answer-option ${css`
+                        background: ${answerSettings.labels_colors[k].color};
+                    `}`} onClick={() => this.props.onMarkAnswer(commentItem, k)}>
+                                <p>{answerSettings.labels[k]}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </>}
             <div className="content-container">
                 <div className="label-container">
                     <p className="item-label">{commentItem.name}</p>
@@ -102,6 +124,35 @@ display: flex;
 flex-direction: column;
 align-items: center;
 
+.answer-option-wrapper {
+    padding: 1px;
+    border-radius: 16px;
+    margin: 8px 0;
+}
+.answer-selection-label {
+    align-self: start;
+    text-align: left;
+}
+
+.answer-selection-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    align-self: start;
+    .answer-option {
+        cursor: pointer;
+        padding: 8px;
+        height: 32px;
+        border-radius: 16px;
+        color: white;
+        text-align: center;
+        margin: 0 4px;
+
+        &.selected {
+
+        }
+    }
+}
 
 .content-container {
     display: flex;

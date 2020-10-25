@@ -12,7 +12,7 @@ interface CreatePostPageProps {
 const CreatePostPage: React.FC<RouteComponentProps<CreatePostPageProps>> = (props) => (
     <Subscribe to={[ItemsContainer, EmbeddedMondayStateContainer]}>
         {(itemsContainer: ItemsContainer, mondayContainer: EmbeddedMondayStateContainer) => (
-            <CreatePostContent itemsContainer={itemsContainer} mondayContainer={mondayContainer} groupId={props.match.params.groupId}/>
+            <CreatePostContent itemsContainer={itemsContainer} mondayContainer={mondayContainer} groupId={props.match.params.groupId} history={props.history}/>
         )}
     </Subscribe>
 );

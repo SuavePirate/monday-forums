@@ -6,7 +6,12 @@ export const getBoardById = (boardId: string | number) => {
     return monday.api(`query { boards(ids: ${boardId}) { 
             id
             name
-            description,
+            description
+            columns {
+                id
+                title
+                settings_str
+            }
             groups {
                 id,
                 title,
@@ -30,6 +35,11 @@ export const getSubItemsBoard = (boardId: number) => {
             id
             name
             description,
+            columns {
+                id
+                title
+                settings_str
+            }
             items {
                 id,
                 name,
@@ -44,6 +54,7 @@ export const getSubItemsBoard = (boardId: number) => {
                     value
                     type
                     text
+                    additional_info
                 }
             }
         }

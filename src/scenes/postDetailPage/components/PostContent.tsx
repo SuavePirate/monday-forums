@@ -74,12 +74,33 @@ export default class PostContent extends React.Component<PostProps, PostState> {
             item,
             this.props.mondayContainer.state.me);
     }
+    async handleMarkAnswer(item: Item, answerTypeId: string) {
+        console.log(item)
+        await this.props.itemsContainer.setAnswerType(
+            this.props.mondayContainer.state.subItemsBoard.id,
+            item,
+            answerTypeId);
+    }
     render() {
-        const { itemsContainer, groupId } = this.props;
+        const { itemsContainer, groupId, mondayContainer } = this.props;
         const { currentItem, isLoading } = itemsContainer.state;
-        const group = this.props.mondayContainer.state.board.groups.find(g => g.id == groupId);
+        const group = mondayContainer.state.board.groups.find(g => g.id == groupId);
         const subItemsValue = currentItem?.column_values?.find(v => v.type === "subtasks")?.value;
         const votes = itemsContainer.getVoteCounts(currentItem);
+        const isCreator = currentItem?.creator?.id == mondayContainer.state.me?.id
+        const groupChip = css`
+            background: ${group?.color};
+            color: white;
+            height: 24px;
+            text-align: center;
+            border-radius: 12px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 8px;
+        `
+
         let subItems = null
         if (subItemsValue) {
             const subIds = JSON.parse(subItemsValue);
@@ -96,6 +117,9 @@ export default class PostContent extends React.Component<PostProps, PostState> {
                 <p className={createdDate}>
                     {moment(currentItem.created_at).format("MMMM DD, YYYY")}
                 </p>
+                <div className={groupChip}>
+                    <p>{group?.title}</p>
+                </div>
                 <div className={voteContainer}>
                     <p>{votes?.upvoteCount ?? 0}</p>
                     <button type="button" onClick={this.handleUpvote.bind(this)}><img src={likeIcon} /></button>
@@ -112,15 +136,19 @@ export default class PostContent extends React.Component<PostProps, PostState> {
                     <li key={i.id}>
                         <CommentCard item={currentItem}
                             commentItem={i}
+                            canEdit={i.creator.id == mondayContainer.state.me?.id}
+                            canMarkAnswer={isCreator}
+                            answerSettings={JSON.parse(mondayContainer.state.subItemsBoard?.columns?.find(c => c.title == "Answer Type")?.settings_str) ?? {}}
                             voteCounts={itemsContainer.getVoteCounts(i)}
                             onUpvote={this.handleCommentUpvote.bind(this)}
-                            onDownvote={this.handleCommentDownvote.bind(this)} />
+                            onDownvote={this.handleCommentDownvote.bind(this)}
+                            onMarkAnswer={this.handleMarkAnswer.bind(this)} />
                     </li>
                 ))}
             </ul>
             {this.state.isWriting
                 ? <CardView>
-                    <EditComment onConfirm={this.handleNewComment.bind(this)} placeholder="Write a comment" />
+                    <EditComment onConfirm={this.handleNewComment.bind(this)} placeholder="Provide your answer or response! Markdown supported." />
                 </CardView>
                 : <button className={addNewCommentButton} onClick={this.toggleWritePost.bind(this)}>
                     Add new comment
@@ -164,7 +192,7 @@ const voteContainer = css`
 
 const createdDate = css`
     font-size: 14px;
-    margin: 16px;
+    margin: 8px;
 `
 
 const creatorContainer = css`

@@ -28,6 +28,7 @@ export const getItems = (boardId: string | number, groupId: string) => {
                       value
                       type
                       text
+                      additional_info
                     }
                 }
             }
@@ -58,9 +59,35 @@ export const createSubItem = (parentItemId: number | string, item: Item) => {
             }
         }
     }`
-    console.log(query);
     return monday.api(query)
 }
+export const createItem = (boardId: number | string, groupId: string, item: Item) => {
+    const query = `mutation {
+        create_item(board_id: ${boardId}, group_id: "${groupId}" item_name: "${item.name}", column_values: "${graphify(item.column_values)}") {
+            id
+            name
+            created_at
+            updates {
+                id
+                body
+            }
+            creator {
+                id
+                name
+                photo_small
+            }
+            column_values {
+                id
+                title
+                value
+                type
+                text
+            }
+        }
+    }`
+    return monday.api(query)
+}
+
 
 export const updateColumnValue = (itemId: number|string, boardId: number|string, columnId: string, value: string) => {
     return monday.api(`mutation {

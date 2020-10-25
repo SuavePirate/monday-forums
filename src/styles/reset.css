@@ -148,3 +148,7 @@ input, textarea {
     padding: 0 8px;
     font-size: 16px;
 }
+
+textarea {
+    padding: 8px;
+}

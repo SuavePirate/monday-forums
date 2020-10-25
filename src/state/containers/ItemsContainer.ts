@@ -13,6 +13,7 @@ interface ItemsContainerState {
 }
 
 export default class ItemsContainer extends Container<ItemsContainerState> {
+ 
     constructor() {
         super();
         this.state = {
@@ -55,6 +56,21 @@ export default class ItemsContainer extends Container<ItemsContainerState> {
 
         const response = await mondayApi.createSubItem(parentItemId, item);
         const updateResponse = await mondayApi.updateColumnValue(response.data.create_subitem.id, response.data.create_subitem.board.id, "long_text", `{ \\"value\\" : \\"${text}\\", \\"text\\": \\"${text}\\"}`)
+        return response;
+    }
+
+    async addItem(boardId: string | number, groupId: string, title: string, description: string) {
+        const item: Item = {
+            name: title,
+            column_values: [{
+                id: "long_text",
+                value: description,
+                text: description
+            }]
+        };
+
+        const response = await mondayApi.createItem(boardId, groupId, item);
+        const updateResponse = await mondayApi.updateColumnValue(response.data.create_item.id, boardId, "long_text", `{ \\"value\\" : \\"${description}\\", \\"text\\": \\"${description}\\"}`)
         return response;
     }
 
@@ -115,6 +131,12 @@ export default class ItemsContainer extends Container<ItemsContainerState> {
         const reverseJson = JSON.stringify(upvoters).replace(/"/g, '\\"');
         const response = await mondayApi.updateColumnValue(item.id, boardId, item.column_values?.find(v => v.title === 'Downvoters')?.id, `{\\"personsAndTeams\\": ${json}, \\"changed_at\\":\\"2020-10-08T00:30:24.345Z\\"}`)
         const reverseResponse = await mondayApi.updateColumnValue(item.id, boardId, item.column_values?.find(v => v.title === 'Upvoters')?.id, `{\\"personsAndTeams\\": ${reverseJson}, \\"changed_at\\":\\"2020-10-08T00:30:24.345Z\\"}`)
+
+        return response
+    }
+
+    async setAnswerType(boardId: number | string, item: Item, answerTypeId: string) {
+        const response = await mondayApi.updateColumnValue(item.id, boardId, item.column_values?.find(v => v.title === 'Answer Type')?.id, `{\\"index\\": ${answerTypeId}, \\"changed_at\\":\\"2020-10-08T00:30:24.345Z\\"}`)
 
         return response
     }
