@@ -74,6 +74,10 @@ export default class ItemsContainer extends Container<ItemsContainerState> {
         return response;
     }
 
+    async updateItem(boardId: string | number, groupId: string, itemId: string | number, description: string) {
+        const updateResponse = await mondayApi.updateColumnValue(itemId, boardId, "long_text", `{ \\"value\\" : \\"${description}\\", \\"text\\": \\"${description}\\"}`)
+        return updateResponse;
+    }
     setCurrentItem(item: Item) {
         this.setState({
             ...this.state,

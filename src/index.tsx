@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 import { Provider } from 'unstated';
 import CategoryDetailPage from "./scenes/categoryDetailPage";
 import CreatePostPage from "./scenes/createPostPage";
+import EditPostPage from "./scenes/editPostPage";
 import LandingPage from "./scenes/landingPage";
 import PostDetailPage from "./scenes/postDetailPage";
 
@@ -15,6 +16,7 @@ const App = () => (
                 <Route path="/" exact component={LandingPage}/>
                 <Route path="/category/:groupId" exact component={CategoryDetailPage}/>
                 <Route path="/category/:groupId/posts/:itemId" exact component={PostDetailPage}/>
+                <Route path="/category/:groupId/posts/:itemId/edit" exact component={EditPostPage}/>
 
                 <Route path="/post" exact component={CreatePostPage}/>
                 <Route path="/category/:groupId/post" exact component={CreatePostPage}/>

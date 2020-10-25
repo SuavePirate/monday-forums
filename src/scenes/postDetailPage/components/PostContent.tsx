@@ -10,6 +10,7 @@ import { color_ulgrey } from '../../../constants/colors';
 import CommentCard from '../../../components/common/CommentCard';
 import EditComment from '../../../components/common/EditComment';
 import Item from '../../../models/Item';
+import { Link } from 'react-router-dom';
 const likeIcon = require("../../../content/icons/Like.svg");
 
 interface PostProps {
@@ -129,6 +130,7 @@ export default class PostContent extends React.Component<PostProps, PostState> {
                 <div className={descriptionContainer}>
                     {currentItem.column_values.find(c => c.title == "Description")?.text}
                 </div>
+                {isCreator && <Link to={`/category/${group.id}/posts/${currentItem.id}/edit`} className={editButton}>Edit</Link>}
             </CardView>
 
             <ul>
@@ -157,7 +159,14 @@ export default class PostContent extends React.Component<PostProps, PostState> {
     }
 }
 
-
+const editButton = css`
+background: #0085FF;
+color: white;
+border: none;
+border-radius: 4px;
+padding: 8px;
+cursor: pointer;
+`
 
 const addNewCommentButton = css`
     align-self: center;
