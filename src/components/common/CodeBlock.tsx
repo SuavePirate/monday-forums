@@ -1,12 +1,11 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
+import React from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { coy } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/prism"
 
 const CodeBlock: React.FC<{ value: string, language: string }> = (props) => {
   const { language, value } = props;
   return (
-    <SyntaxHighlighter language={language} style={coy}>
+    <SyntaxHighlighter language={language} style={tomorrow}>
       {value}
     </SyntaxHighlighter>
   );

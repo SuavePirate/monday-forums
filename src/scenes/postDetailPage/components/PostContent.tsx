@@ -131,8 +131,7 @@ export default class PostContent extends React.Component<PostProps, PostState> {
                     <p>{votes?.downvoteCount ?? 0}</p>
                 </div>
                 <div className={descriptionContainer}>
-                    <ReactMarkdown source={deserializeNewLines(currentItem.column_values.find(c => c.title == "Description")?.text)}
-                        renderers={{ code: CodeBlock }} />
+                    <ReactMarkdown source={deserializeNewLines(currentItem.column_values.find(c => c.title == "Description")?.text)} />
 
                 </div>
                 {isCreator && <Link to={`/category/${group.id}/posts/${currentItem.id}/edit`} className={editButton}>Edit</Link>}
