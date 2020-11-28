@@ -10,6 +10,7 @@ import { color_ulgrey } from '../../../constants/colors';
 import CommentCard from '../../../components/common/CommentCard';
 import EditComment from '../../../components/common/EditComment';
 import Item from '../../../models/Item';
+import { deserializeNewLines } from '../../../models/extensions/newLineExtensions';
 const likeIcon = require("../../../content/icons/Like.svg");
 
 interface PostProps {
@@ -32,7 +33,7 @@ export default class EditPostContent extends React.Component<PostProps, PostStat
         this.state = {
             groupId: props.groupId,
             title: currentItem.name,
-            description: currentItem.column_values.find(c => c.title == "Description")?.text
+            description: deserializeNewLines(currentItem.column_values.find(c => c.title == "Description")?.text)
         }
     }
     handleDescriptionChange(e) {

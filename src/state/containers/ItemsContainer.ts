@@ -5,6 +5,7 @@ import PeopleColumnValue from "../../models/PeopleColumnValue";
 import User from "../../models/User";
 import _ from "lodash";
 import { updateColumnValue } from "../../api";
+import { serializeNewLines } from "../../models/extensions/newLineExtensions";
 interface ItemsContainerState {
     isLoading: boolean
     items: Item[]
@@ -55,7 +56,7 @@ export default class ItemsContainer extends Container<ItemsContainerState> {
         };
 
         const response = await mondayApi.createSubItem(parentItemId, item);
-        const updateResponse = await mondayApi.updateColumnValue(response.data.create_subitem.id, response.data.create_subitem.board.id, "long_text", `{ \\"value\\" : \\"${text}\\", \\"text\\": \\"${text}\\"}`)
+        const updateResponse = await mondayApi.updateColumnValue(response.data.create_subitem.id, response.data.create_subitem.board.id, "long_text", `{ \\"value\\" : \\"${serializeNewLines(text)}\\", \\"text\\": \\"${serializeNewLines(text)}\\"}`)
         return response;
     }
 
@@ -70,12 +71,12 @@ export default class ItemsContainer extends Container<ItemsContainerState> {
         };
 
         const response = await mondayApi.createItem(boardId, groupId, item);
-        const updateResponse = await mondayApi.updateColumnValue(response.data.create_item.id, boardId, "long_text", `{ \\"value\\" : \\"${description}\\", \\"text\\": \\"${description}\\"}`)
+        const updateResponse = await mondayApi.updateColumnValue(response.data.create_item.id, boardId, "long_text", `{ \\"value\\" : \\"${serializeNewLines(description)}\\", \\"text\\": \\"${serializeNewLines(description)}\\"}`)
         return response;
     }
 
     async updateItem(boardId: string | number, groupId: string, itemId: string | number, description: string) {
-        const updateResponse = await mondayApi.updateColumnValue(itemId, boardId, "long_text", `{ \\"value\\" : \\"${description}\\", \\"text\\": \\"${description}\\"}`)
+        const updateResponse = await mondayApi.updateColumnValue(itemId, boardId, "long_text", `{ \\"value\\" : \\"${serializeNewLines(description)}\\", \\"text\\": \\"${serializeNewLines(description)}\\"}`)
         return updateResponse;
     }
     setCurrentItem(item: Item) {

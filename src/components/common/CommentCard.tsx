@@ -6,6 +6,8 @@ import { shadow_medium, shadow_small } from '../../constants/shadows';
 import { Link } from 'react-router-dom';
 import { color_light, color_text_asphalt, color_text_dark, color_ulgrey } from '../../constants/colors';
 import AnswerTypeColumn from '../../models/AnswerTypeColumn';
+import ReactMarkdown from 'react-markdown';
+import { deserializeNewLines } from '../../models/extensions/newLineExtensions';
 const likeIcon = require("../../content/icons/Like.svg");
 const expandIcon = require('../../content/icons/Move to.svg');
 
@@ -95,7 +97,7 @@ class CommentCard extends React.Component<CommentProps, CommentState> {
             </div>
             {this.state.isExpanded &&
                 <p className={'expanded-container'}>
-                    {commentItem?.column_values?.find(c => c.title == "Description")?.text}
+                    <ReactMarkdown  source={deserializeNewLines(commentItem?.column_values?.find(c => c.title == "Description")?.text)}/>
                 </p>
             }
             <button className="expand-toggle" onClick={this.toggleExpand.bind(this)}>
