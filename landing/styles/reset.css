@@ -128,9 +128,12 @@ a {
 }
 
 h1 {
-    font-size: 32px;
+    font-size: 48px;
+    margin:32px;
 }
-
+h2 {
+    font-size: 36px;
+}
 button {
     background: #0085FF;
     color: white;
