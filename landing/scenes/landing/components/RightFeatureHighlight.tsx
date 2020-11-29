@@ -8,6 +8,7 @@ interface HighlightProps {
     title: string
     description: string
     backgroundImage?: string
+    withImageStyles?: boolean
     link?: string
     linkText?: string
 }
@@ -28,12 +29,11 @@ const RightFeatureHighlight: React.FC<HighlightProps> = (props) => {
             >img {
                 height: 400px;
                 width: auto;
-                background: white;
                 border-radius: 8px;
-                box-shadow: ${shadow_small};
+                ${props.withImageStyles ? `background: white; box-shadow: ${shadow_small};` : ''}
             }
             flex: 1;
-            padding: 64px;
+            padding: 16px 64px;
             text-align: center;
             h2 {
                 margin: 24px 0;

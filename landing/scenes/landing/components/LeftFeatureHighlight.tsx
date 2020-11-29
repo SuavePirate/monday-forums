@@ -7,6 +7,7 @@ interface HighlightProps {
     image: string,
     title: string
     description: string
+    withImageStyles?: boolean
     backgroundImage?: string
     link?: string
     linkText?: string
@@ -25,14 +26,13 @@ const LeftFeatureHighlight: React.FC<HighlightProps> = (props) => {
         flex-wrap: wrap;
         >div {
             flex: 1;
-            padding: 64px;
+            padding: 16px 64px;
             text-align: center;
             >img {
                 height: 400px;
                 width: auto;
-                background: white;
                 border-radius: 8px;
-                box-shadow: ${shadow_small};
+                ${props.withImageStyles ? `background: white; box-shadow: ${shadow_small};` : ''}
             }
             h2 {
                 margin: 24px 0;

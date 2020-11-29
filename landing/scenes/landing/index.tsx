@@ -11,6 +11,15 @@ const rightBlob3 = require('../../content/images/right-blob-3.png');
 const leftBlob1 = require('../../content/images/left-blob-1.png');
 const leftBlob2 = require('../../content/images/left-blob-2.png');
 const leftBlob3 = require('../../content/images/left-blob-3.png');
+
+const categories = require('../../content/images/categories.png');
+const users = require('../../content/images/users.png');
+const voting = require('../../content/images/voting.png');
+const action = require('../../content/images/action.png');
+const withMonday = require('../../content/images/forums+monday.png');
+const mondayManager = require('../../content/images/monday-manager.png');
+
+
 const LandingPage = () => (
     <Scrollbars autoHide>
         <div className={containerStyle}>
@@ -20,15 +29,17 @@ const LandingPage = () => (
             <section>
                 <h1>Turn your monday.com board into a community building forum tool.</h1>
                 <p>Includes everything you'd expect in a forum tool, but managed entirely within your monday.com account.</p>
-                <LeftFeatureHighlight title="Categorize" description="Turn board groups into categories to organize questions and posts" image={logo} backgroundImage={leftBlob1}/>
-                <RightFeatureHighlight title="Voting and scoring" description="Let your community vote on posts and comments to show the value of the posts. Mark comments as full or partial answers or label with other details." image={logo} backgroundImage={rightBlob1} />
-                <LeftFeatureHighlight title="User management built-in" description="Use your monday.com organization account to manage your user access by creating guest users and more." image={logo} backgroundImage={leftBlob2}/>
-                <RightFeatureHighlight title="Turn community posts into action" description="Turn forum post items into actionable items in your internal boards." image={logo} backgroundImage={rightBlob2}/>
-                <LeftFeatureHighlight title="Works with the Monday Manager" description="Use the Monday Manager Alexa Skill and Google Action to quickly add items, hear details, and more!" image={logo} backgroundImage={leftBlob3} />
-                <RightFeatureHighlight title="Built entirely on Monday" description="Your data stays entirely between you and monday.com, make use of all of other monday's features, other apps and views, sorting, organizing, and more!" image={logo} backgroundImage={rightBlob3}/>
-                <div>
+                <a className="add-button" href="https://auth.monday.com/oauth2/authorize?client_id=a073090cd61e2a01058fd296d79200ed&response_type=install"> <img alt="Add to monday.com" height="42" src="https://dapulse-res.cloudinary.com/image/upload/f_auto,q_auto/remote_mondaycom_static/uploads/Tal/4b5d9548-0598-436e-a5b6-9bc5f29ee1d9_Group12441.png" /> </a>
+                <LeftFeatureHighlight title="Categorize" description="Turn board groups into categories to organize questions and posts" image={categories} backgroundImage={leftBlob1}/>
+                <RightFeatureHighlight title="Voting and scoring" description="Let your community vote on posts and comments to show the value of the posts. Mark comments as full or partial answers or label with other details." image={voting} backgroundImage={rightBlob1} />
+                <LeftFeatureHighlight title="User management built-in" description="Use your monday.com organization account to manage your user access by creating guest users and more." image={users} withImageStyles backgroundImage={leftBlob2}/>
+                <RightFeatureHighlight title="Turn community posts into action" description="Turn forum post items into actionable items in your internal boards. Your members use the forum, you use the boards!" image={action} withImageStyles backgroundImage={rightBlob2}/>
+                <LeftFeatureHighlight title="Works with the Monday Manager" description="Use the Monday Manager Alexa Skill and Google Action to quickly add items, hear details, and more!" image={mondayManager} backgroundImage={leftBlob3} />
+                <RightFeatureHighlight title="Built entirely on Monday" description="Your data stays entirely between you and monday.com, make use of all of other monday's features, other apps and views, sorting, organizing, and more!" image={withMonday} withImageStyles backgroundImage={rightBlob3}/>
+                <div className="feature-breakdown">
                     <h2>Full Feature Breakdown</h2>
                     <ul className="feature-list">
+                        <li>✅ Complete forum template board</li>
                         <li>✅ Create and edit posts</li>
                         <li>✅ Create and edit comments</li>
                         <li>✅ Upvote and downvote posts and comments</li>
@@ -45,6 +56,8 @@ const LandingPage = () => (
                         </li>
                     </ul>
                 </div>
+                <a className="add-button" href="https://auth.monday.com/oauth2/authorize?client_id=a073090cd61e2a01058fd296d79200ed&response_type=install"> <img alt="Add to monday.com" height="42" src="https://dapulse-res.cloudinary.com/image/upload/f_auto,q_auto/remote_mondaycom_static/uploads/Tal/4b5d9548-0598-436e-a5b6-9bc5f29ee1d9_Group12441.png" /> </a>
+               
             </section>
             <footer>
                 <p>
@@ -70,6 +83,9 @@ const containerStyle = css`
             width: auto;
         }
     }
+    .add-button {
+        margin: 32px;
+    }
 
     section {
         display: flex;
@@ -89,6 +105,9 @@ const containerStyle = css`
             margin-left: 32px;
             margin-top: 0;
         }
+    }
+    .feature-breakdown {
+        margin: 32px;
     }
 
     footer {
