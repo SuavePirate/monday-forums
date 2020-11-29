@@ -7,8 +7,10 @@ import { color_light, color_text_asphalt, color_ulgrey } from '../../constants/c
 const logo = require('../../content/images/mf-double-transparent.png');
 const rightBlob1 = require('../../content/images/right-blob-1.png');
 const rightBlob2 = require('../../content/images/right-blob-2.png');
+const rightBlob3 = require('../../content/images/right-blob-3.png');
 const leftBlob1 = require('../../content/images/left-blob-1.png');
 const leftBlob2 = require('../../content/images/left-blob-2.png');
+const leftBlob3 = require('../../content/images/left-blob-3.png');
 const LandingPage = () => (
     <Scrollbars autoHide>
         <div className={containerStyle}>
@@ -22,8 +24,8 @@ const LandingPage = () => (
                 <RightFeatureHighlight title="Voting and scoring" description="Let your community vote on posts and comments to show the value of the posts. Mark comments as full or partial answers or label with other details." image={logo} backgroundImage={rightBlob1} />
                 <LeftFeatureHighlight title="User management built-in" description="Use your monday.com organization account to manage your user access by creating guest users and more." image={logo} backgroundImage={leftBlob2}/>
                 <RightFeatureHighlight title="Turn community posts into action" description="Turn forum post items into actionable items in your internal boards." image={logo} backgroundImage={rightBlob2}/>
-                <LeftFeatureHighlight title="Works with the Monday Manager" description="Use the Monday Manager Alexa Skill and Google Action to quickly add items, hear details, and more!" image={logo} />
-                <RightFeatureHighlight title="Built entirely on Monday" description="Your data stays entirely between you and monday.com, make use of all of other monday's features, other apps and views, sorting, organizing, and more!" image={logo}/>
+                <LeftFeatureHighlight title="Works with the Monday Manager" description="Use the Monday Manager Alexa Skill and Google Action to quickly add items, hear details, and more!" image={logo} backgroundImage={leftBlob3} />
+                <RightFeatureHighlight title="Built entirely on Monday" description="Your data stays entirely between you and monday.com, make use of all of other monday's features, other apps and views, sorting, organizing, and more!" image={logo} backgroundImage={rightBlob3}/>
                 <div>
                     <h2>Full Feature Breakdown</h2>
                     <ul className="feature-list">
