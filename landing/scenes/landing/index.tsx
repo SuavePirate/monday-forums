@@ -29,7 +29,7 @@ const LandingPage = () => (
             <section>
                 <h1>Turn your monday board into a community building forum tool.</h1>
                 <p>Includes everything you'd expect in a forum tool, but managed entirely within your monday.com account.</p>
-                <a className="add-button" href="https://auth.monday.com/oauth2/authorize?client_id=a073090cd61e2a01058fd296d79200ed&response_type=install"> <img alt="Add to monday.com" height="42" src="https://dapulse-res.cloudinary.com/image/upload/f_auto,q_auto/remote_mondaycom_static/uploads/Tal/4b5d9548-0598-436e-a5b6-9bc5f29ee1d9_Group12441.png" /> </a>
+                <a className="add-button" href="https://auth.monday.com/oauth2/authorize?client_id=a073090cd61e2a01058fd296d79200ed&response_type=install"> <img alt="Add to monday.com" height="64" src="https://dapulse-res.cloudinary.com/image/upload/f_auto,q_auto/remote_mondaycom_static/uploads/Tal/4b5d9548-0598-436e-a5b6-9bc5f29ee1d9_Group12441.png" /> </a>
                 <LeftFeatureHighlight title="Categorize" description="Turn board groups into categories to organize questions and posts" image={categories} backgroundImage={leftBlob1} />
                 <RightFeatureHighlight title="Voting and scoring" description="Let your community vote on posts and comments to show the value of the posts. Mark comments as full or partial answers or label with other details." image={voting} backgroundImage={rightBlob1} />
                 <LeftFeatureHighlight title="User management built-in" description="Use your monday.com organization account to manage your user access by creating guest users and more." image={users} withImageStyles backgroundImage={leftBlob2} />
